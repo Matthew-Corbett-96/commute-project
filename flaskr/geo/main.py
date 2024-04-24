@@ -1,18 +1,14 @@
 import json
+from os import environ
+
 import requests
 from requests.models import Response
 
-api_key = "AIzaSyCBsjUxCwkwDA8XUkb_aO3x0J0VewR4z_A"
-
 
 def get_dist_dur(start, end):
-    base_url = "https://maps.googleapis.com/maps/api/distancematrix/json"
+    base_url: str = environ.get("BASE_URL", "")
 
-    params = {
-        "origins": start,
-        "destinations": end,
-        "key": "AIzaSyCBsjUxCwkwDA8XUkb_aO3x0J0VewR4z_A",
-    }
+    params = {"origins": start, "destinations": end, "key": environ.get("API_KEY")}
 
     response: Response = requests.get(base_url, params=params)
 
@@ -31,13 +27,13 @@ def get_dist_dur(start, end):
 
 
 def pull_start_end() -> tuple[list[str], list[str]]:
-    starts: list[str] = []
-    ends: list[str] = []
+    homes: list[str] = []
+    works: list[str] = []
     # open file and parse Json
     with open("locations.json", "r") as file:
         data = json.load(file)
-        for item in data["start-locations"]:
-            starts.append(item)
-        for item in data["end-locations"]:
-            ends.append(item)
-    return starts, ends
+        for item in data["homes"]:
+            homes.append(item)
+        for item in data["works"]:
+            works.append(item)
+    return homes, works

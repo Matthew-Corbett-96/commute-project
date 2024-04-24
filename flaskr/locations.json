@@ -1,9 +1,9 @@
 {
-   "start-locations": [
+   "homes": [
       "38 Apthorp Street, Quincy, MA 02170, USA",
       "191 Armistice Blvd, Pawtucket, RI 02861, USA"
    ],
-   "end-locations": [
+   "works": [
       "900 Chelmsford Street, Lowell, MA 01851, USA",
       "250 Foxborough Blvd, Foxborough, MA 02035, USA"
    ]

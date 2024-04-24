@@ -5,13 +5,13 @@ if __name__ == "__main__":
     homes, works = pull_start_end()
     results: dict[str, dict[str, str]] = {}
 
-    for home in homes:
+    for work in works:
         temp = {}
-        for work in works:
-            distance, duration = get_dist_dur(home, work)
+        for home in homes:
+            distance, duration = get_dist_dur(work, home)
             if distance and duration:
-                temp[work] = {"distance": distance, "duration": duration}
-        results[home] = temp
+                temp[home] = {"distance": distance, "duration": duration}
+        results[work] = temp
     
-    with open("results-morning.json", "w") as file:
+    with open("results-afternoon.json", "w") as file:
         json.dump(results, file, indent=4)

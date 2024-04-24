@@ -2,3 +2,4 @@ Flask
 python-dotenv
 celery[redis]
 gunicon
+google-cloud

@@ -1,12 +1,8 @@
 import json
 
-from celery import shared_task
-from celery.utils.log import get_task_logger
 from geo.main import get_dist_dur, pull_start_end
 
-
-@shared_task(bind=True)
-def morningCommute(self) -> None:
+if __name__ == "__main__":
     homes, works = pull_start_end()
     results: dict[str, dict[str, str]] = {}
 
@@ -20,8 +16,3 @@ def morningCommute(self) -> None:
 
     with open("results-morning.json", "w") as file:
         json.dump(results, file, indent=4)
-
-
-@shared_task(bind=True)
-def afternoonCommute(self) -> None:
-    get_task_logger("Test").info("Test")

@@ -1,4 +1,5 @@
 import json
+
 from geo.main import get_dist_dur, pull_start_end
 
 if __name__ == "__main__":
@@ -12,6 +13,6 @@ if __name__ == "__main__":
             if distance and duration:
                 temp[home] = {"distance": distance, "duration": duration}
         results[work] = temp
-    
+
     with open("results-afternoon.json", "w") as file:
         json.dump(results, file, indent=4)

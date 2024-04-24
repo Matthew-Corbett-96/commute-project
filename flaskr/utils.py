@@ -1,7 +1,5 @@
-from sys import stdout
 from celery import Celery, Task
 from flask import Flask
-import logging
 
 
 def celery_init_app(app: Flask) -> Celery:
@@ -15,3 +13,4 @@ def celery_init_app(app: Flask) -> Celery:
     celery_app.set_default()
     app.extensions["celery"] = celery_app
     return celery_app
+
