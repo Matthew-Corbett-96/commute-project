@@ -17,3 +17,5 @@ RUN chmod +x deployment/worker-entrypoint.sh \
     && chmod +x deployment/server-entrypoint.sh
 
 EXPOSE 8000
+
+CMD ["flask", "run", "--reload"]

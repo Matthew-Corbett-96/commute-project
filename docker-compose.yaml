@@ -1,0 +1,49 @@
+version: '3.9'
+
+volumes:
+  postgres_data:
+
+networks:
+  main:
+    name: main_network
+    driver: bridge
+    external: true
+
+services:
+  main:
+    container_name: commute-main
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    networks:
+      - main
+    depends_on:
+      - redis
+    
+  celery:
+    container_name: commute-worker
+    build:
+      context: .
+    networks:
+      - main
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    command: celery -A flaskr.run.celery worker -B --loglevel=info
+    depends_on:
+      - main
+      - redis
+
+  redis:
+    container_name: commute-redis
+    image: redis:latest
+    networks:
+      - main
+    ports:
+      - "6379:6379"
+

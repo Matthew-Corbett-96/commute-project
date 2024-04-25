@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from os import environ
 
 import requests
@@ -30,10 +31,42 @@ def pull_start_end() -> tuple[list[str], list[str]]:
     homes: list[str] = []
     works: list[str] = []
     # open file and parse Json
-    with open("locations.json", "r") as file:
+    with open("flaskr/geo/locations.json", "r") as file:
         data = json.load(file)
         for item in data["homes"]:
             homes.append(item)
         for item in data["works"]:
             works.append(item)
     return homes, works
+
+
+def morning_commute() -> None:
+    homes, works = pull_start_end()
+    results: dict[str, dict[str, str]] = {}
+
+    for home in homes:
+        temp = {}
+        for work in works:
+            distance, duration = get_dist_dur(home, work)
+            if distance and duration:
+                temp[work] = {"distance": distance, "duration": duration}
+        results[home] = temp
+
+    with open(f"results-morning{datetime.now()}.json", "w") as file:
+        json.dump(results, file, indent=4)
+
+
+def afternoon_commute() -> None:
+    homes, works = pull_start_end()
+    results: dict[str, dict[str, str]] = {}
+
+    for work in works:
+        temp = {}
+        for home in homes:
+            distance, duration = get_dist_dur(work, home)
+            if distance and duration:
+                temp[home] = {"distance": distance, "duration": duration}
+        results[work] = temp
+
+    with open(f"results-afternoon{datetime.now()}.json", "w") as file:
+        json.dump(results, file, indent=4)

@@ -2,26 +2,15 @@ import json
 
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from geo.main import get_dist_dur, pull_start_end
+
+from flaskr.geo.main import afternoon_commute, morning_commute
 
 
 @shared_task(bind=True)
-def morningCommute(self) -> None:
-    homes, works = pull_start_end()
-    results: dict[str, dict[str, str]] = {}
-
-    for home in homes:
-        temp = {}
-        for work in works:
-            distance, duration = get_dist_dur(home, work)
-            if distance and duration:
-                temp[work] = {"distance": distance, "duration": duration}
-        results[home] = temp
-
-    with open("results-morning.json", "w") as file:
-        json.dump(results, file, indent=4)
+def morning_commute_task(self) -> None:
+    morning_commute()
 
 
 @shared_task(bind=True)
-def afternoonCommute(self) -> None:
-    get_task_logger("Test").info("Test")
+def afternoon_commute_task(self) -> None:
+    afternoon_commute()
